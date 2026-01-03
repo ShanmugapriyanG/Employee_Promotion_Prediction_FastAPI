@@ -59,24 +59,24 @@ def predict_promotion(data: EmployeeData):
 
     x_input['performance_index'] = (
         x_input['avg_training_score']
-        * (x_input['KPIs_met >80%'] + 1)
-        * (x_input['awards_won?'] + 1)
+        * (x_input['KPIs_met_80'] + 1)
+        * (x_input['awards_won'] + 1)
     )
 
     x_input['kpi_per_training'] = (
-        x_input['KPIs_met >80%'] / (x_input['no_of_trainings'] + 1)
+        x_input['KPIs_met_80'] / (x_input['no_of_trainings'] + 1)
     )
 
     x_input['awards_per_service'] = (
-        x_input['awards_won?'] / (x_input['length_of_service'] + 1)
+        x_input['awards_won'] / (x_input['length_of_service'] + 1)
     )
 
     x_input['score_times_awards'] = (
-        x_input['avg_training_score'] * (x_input['awards_won?'] + 1)
+        x_input['avg_training_score'] * (x_input['awards_won'] + 1)
     )
 
     x_input['score_times_kpi'] = (
-        x_input['avg_training_score'] * (x_input['KPIs_met >80%'] + 1)
+        x_input['avg_training_score'] * (x_input['KPIs_met_80'] + 1)
     )
 
     # ------------------------------
