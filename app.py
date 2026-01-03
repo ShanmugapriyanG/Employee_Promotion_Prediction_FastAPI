@@ -3,6 +3,7 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 import joblib
 import pandas as pd
+from pydantic import Field
 
 # --------------------------------------------------
 # FastAPI app
@@ -29,9 +30,12 @@ class EmployeeData(BaseModel):
     age: int
     previous_year_rating: int
     length_of_service: int
-    KPIs_met_80: int
-    awards_won: int
-    avg_training_score: float
+    KPIs_met_80: int = Field(..., alias="KPIs_met >80%")
+    awards_won: int = Field(..., alias="awards_won?")
+    avg_training_score: int
+
+    class Config:
+        allow_population_by_field_name = True
 
 # --------------------------------------------------
 # Prediction Endpoint
@@ -55,24 +59,24 @@ def predict_promotion(data: EmployeeData):
 
     x_input['performance_index'] = (
         x_input['avg_training_score']
-        * (x_input['KPIs_met_80'] + 1)
-        * (x_input['awards_won'] + 1)
+        * (x_input['KPIs_met >80%'] + 1)
+        * (x_input['awards_won?'] + 1)
     )
 
     x_input['kpi_per_training'] = (
-        x_input['KPIs_met_80'] / (x_input['no_of_trainings'] + 1)
+        x_input['KPIs_met >80%'] / (x_input['no_of_trainings'] + 1)
     )
 
     x_input['awards_per_service'] = (
-        x_input['awards_won'] / (x_input['length_of_service'] + 1)
+        x_input['awards_won?'] / (x_input['length_of_service'] + 1)
     )
 
     x_input['score_times_awards'] = (
-        x_input['avg_training_score'] * (x_input['awards_won'] + 1)
+        x_input['avg_training_score'] * (x_input['awards_won?'] + 1)
     )
 
     x_input['score_times_kpi'] = (
-        x_input['avg_training_score'] * (x_input['KPIs_met_80'] + 1)
+        x_input['avg_training_score'] * (x_input['KPIs_met >80%'] + 1)
     )
 
     # ------------------------------
