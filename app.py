@@ -48,7 +48,7 @@ def read_root():
 @app.post("/predict")
 def predict_promotion(data: EmployeeData):
     # Convert to DataFrame
-    x_input = pd.DataFrame([data.dict(by_alias=False)])
+    x_input = pd.DataFrame([data.dict(by_alias=True)])
 
     # ------------------------------
     # Feature Engineering
